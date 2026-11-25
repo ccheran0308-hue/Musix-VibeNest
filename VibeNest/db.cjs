@@ -1,21 +1,14 @@
+const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
 
-const mysql = require('mysql2');
+const dbPath = path.join(__dirname, 'music.db');
 
-// Create a connection to the database
-const connection = mysql.createConnection({
-  host: 'localhost',       // Your database host
-  user: 'root',            // Your database username
-  password: 'root',    // Your database password
-  database: 'musix',
-  port: 3308 
-});
-
-connection.connect((err) => {
+const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
-    console.error('error connecting: ' + err.stack);
-    return;
+    console.error('❌ SQLite connection failed:', err.message);
+  } else {
+    console.log('✅ Connected to SQLite database');
   }
-  console.log('connected to the database as id ' + connection.threadId);
 });
 
-module.exports = connection;
+module.exports = db;
